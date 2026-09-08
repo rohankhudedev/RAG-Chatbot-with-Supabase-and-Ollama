@@ -3,7 +3,7 @@ import { PDFParse } from 'pdf-parse'
 
 import { generateEmbedding } from '@/lib/embeddings'
 import { chunkText } from '@/lib/chunk'
-import { supabase } from '@/lib/supabase'
+import { getSupabase } from '@/lib/supabase'
 
 export const runtime = 'nodejs'
 
@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
         embedding
       })
     }
-
+    const supabase = getSupabase()
     const { error } = await supabase.from('document_chunks').insert(rows)
 
     if (error) {

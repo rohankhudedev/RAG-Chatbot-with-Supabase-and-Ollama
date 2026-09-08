@@ -1,9 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  experimental: {
-    serverComponentsExternalPackages: ['pdf-parse', 'pdfjs-dist']
-  },
+  // experimental: {
+  //   serverComponentsExternalPackages: ['pdf-parse', 'pdfjs-dist']
+  // },
+  output: 'standalone',
   reactCompiler: true
 }
 

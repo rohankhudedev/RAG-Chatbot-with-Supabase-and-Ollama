@@ -1,8 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
-import ollama from 'ollama'
+import { Ollama } from 'ollama'
 
 import { generateEmbedding } from '@/lib/embeddings'
-import { supabase } from '@/lib/supabase'
+import { getSupabase } from '@/lib/supabase'
+
+
+const OLLAMA_HOST = process.env.OLLAMA_BASE_URL || 'http://127.0.0.1:11434'
+
+console.log('Ollama host:', OLLAMA_HOST)
+
+const ollama = new Ollama({
+  host: OLLAMA_HOST
+})
 
 export async function POST(request: NextRequest) {
   const body = await request.json()
@@ -14,6 +23,8 @@ export async function POST(request: NextRequest) {
   }
 
   const questionEmbedding = await generateEmbedding(question)
+
+  const supabase = getSupabase()
 
   const { data: chunks, error } = await supabase.rpc('match_document_chunks', {
     query_embedding: questionEmbedding,
